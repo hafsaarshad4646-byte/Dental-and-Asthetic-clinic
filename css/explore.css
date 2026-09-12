@@ -1,0 +1,383 @@
+/* ============================================================
+   Explore — "What brings you here today?"
+   Premium card-based category selector with content panels.
+   Uses ONLY the website's existing design tokens & buttons.
+   ============================================================ */
+
+.explore {
+  position: relative;
+  background: var(--bg-soft);
+  padding: clamp(90px, 11vw, 150px) 0 clamp(80px, 10vw, 130px);
+  overflow: hidden;
+  scroll-margin-top: var(--header-h);
+}
+.explore .container { position: relative; z-index: 1; }
+
+/* Subtle background rings decoration */
+.explore-rings {
+  position: absolute;
+  left: 50%;
+  top: 54%;
+  width: min(720px, 130%);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  color: var(--teal);
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 0;
+}
+.explore-rings svg { width: 100%; height: 100%; }
+
+/* ---------- Header ---------- */
+.explore-head {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto clamp(48px, 6vw, 80px);
+}
+.explore-head .eyebrow { justify-content: center; }
+.explore-head .eyebrow::after {
+  content: "";
+  width: 34px;
+  height: 1px;
+  background: var(--gold);
+  opacity: 0.8;
+}
+.explore-head .section-title { margin-inline: auto; }
+.explore-sub {
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 1.9;
+  color: var(--ink-soft);
+}
+
+/* ---------- Card Grid ---------- */
+.explore-dial {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: clamp(16px, 2vw, 22px);
+  max-width: 1080px;
+  margin-inline: auto;
+}
+
+/* ---------- Individual Card ---------- */
+.explore-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 28.5px 28.5px 20px 20px;
+  color: var(--ink);
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  outline: none;
+  overflow: hidden;
+  box-shadow: 0 12px 32px -18px rgba(20, 36, 46, 0.22);
+  transition: transform 0.5s ease-out,
+              box-shadow 0.5s ease-out,
+              border-color 0.5s ease-out;
+}
+
+/* ---------- Stagger effect: subtle floating rhythm ---------- */
+.explore-item:nth-child(even) {
+  margin-top: 2px;
+}
+
+/* ---------- Image area: ~65% of card, consistent height ---------- */
+.explore-media {
+  position: relative;
+  display: block;
+  width: 100%;
+  flex: 0 0 260px;
+  height: 260px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: inherit;
+}
+.explore-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+/* ---------- Meta: number + category name ---------- */
+.explore-meta {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 16px 20px 20px;
+  border-top: 1px solid var(--line);
+  transition: border-color 0.5s ease-out;
+}
+.explore-num {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  transition: transform 0.5s ease-out;
+}
+.explore-name {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(18px, 1.8vw, 22px);
+  line-height: 1.15;
+  color: var(--ink);
+  transition: transform 0.5s ease-out,
+              color 0.5s ease-out;
+}
+
+/* ---------- Gold accent line: animates from left on hover ---------- */
+.explore-item::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-soft));
+  transition: width 0.5s ease-out;
+}
+
+/* ---------- Hover State ---------- */
+.explore-item:hover {
+  transform: translateY(-8px);
+  border-color: rgba(174, 142, 94, 0.35);
+  box-shadow:
+    0 28px 56px -22px rgba(20, 36, 46, 0.30),
+    0 0 0 1px rgba(174, 142, 94, 0.15),
+    inset 0 0 20px -10px rgba(174, 142, 94, 0.06);
+}
+.explore-item:hover .explore-num  { transform: translateY(-3px); }
+.explore-item:hover .explore-name { transform: translateY(-3px); color: var(--teal); }
+.explore-item:hover::after        { width: 100%; }
+.explore-item:hover .explore-meta { border-color: rgba(174, 142, 94, 0.25); }
+
+.explore-item:focus-visible {
+  box-shadow:
+    0 0 0 2px rgba(47, 109, 106, 0.4),
+    0 12px 32px -18px rgba(20, 36, 46, 0.22);
+}
+
+/* ---------- Active / Selected State ---------- */
+.explore-item.is-active {
+  border-color: rgba(174, 142, 94, 0.5);
+  box-shadow:
+    0 20px 48px -20px rgba(20, 36, 46, 0.28),
+    0 0 0 1px rgba(174, 142, 94, 0.2);
+}
+.explore-item.is-active .explore-name { color: var(--ink); }
+.explore-item.is-active::after {
+  width: 60%;
+  background: linear-gradient(90deg, var(--gold), var(--teal));
+}
+
+/* ---------- Content Panel Container ---------- */
+.explore-panel {
+  position: relative;
+  max-width: 1080px;
+  margin: clamp(32px, 3.5vw, 50px) auto 0;
+  min-height: 200px;
+  transition: height 0.8s var(--ease-luxe);
+}
+
+/* ---------- Content Card ---------- */
+.explore-card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  box-shadow: var(--shadow-soft);
+  padding: clamp(32px, 4vw, 56px) clamp(32px, 5vw, 72px);
+  opacity: 0;
+  transform: translateY(24px);
+  visibility: hidden;
+  transition: opacity 0.7s var(--ease-luxe),
+              transform 0.7s var(--ease-luxe),
+              visibility 0s 0.8s;
+}
+.explore-card.is-open {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+  transition: opacity 0.7s var(--ease-luxe),
+              transform 0.7s var(--ease-luxe),
+              visibility 0s;
+}
+
+/* Card Header with Number + Title */
+.explore-card-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.explore-card-label {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+}
+.explore-card-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(24px, 2.6vw, 30px);
+  color: var(--ink);
+}
+
+/* Card Description */
+.explore-card-copy {
+  font-size: 15.5px;
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--ink-soft);
+  max-width: 560px;
+  margin-bottom: 28px;
+}
+
+/* Services List */
+.explore-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 560px;
+}
+.explore-list[data-columns] {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px 40px;
+  align-content: start;
+}
+.explore-list li {
+  position: relative;
+  padding-left: 28px;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+.explore-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid var(--gold);
+  border-radius: 50%;
+  opacity: 0.7;
+}
+
+/* CTA Link */
+.explore-cta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: clamp(28px, 3vw, 40px);
+  padding: 16px 36px;
+  border-radius: 60px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--white);
+  border: 1px solid var(--teal);
+  background: var(--teal);
+  box-shadow: 0 22px 46px -18px rgba(47, 109, 106, 0.55);
+  transition: transform 0.5s var(--ease-luxe),
+              box-shadow 0.5s var(--ease-luxe);
+}
+.explore-cta-link:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 26px 50px -18px rgba(47, 109, 106, 0.55);
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+@media (max-width: 1000px) {
+  .explore-dial {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 900px;
+    gap: 16px;
+  }
+  .explore-item:nth-child(even) { margin-top: 2px; }
+}
+
+@media (max-width: 640px) {
+  .explore {
+    padding: 72px 0 60px;
+  }
+  .explore-dial {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 460px;
+    gap: 12px;
+  }
+  .explore-item:nth-child(even) { margin-top: 0; }
+  .explore-media { flex-basis: 240px; height: 240px; }
+  .explore-meta { padding: 12px 16px 16px; gap: 3px; }
+  .explore-name { font-size: 19px; }
+
+  .explore-panel {
+    margin-top: 20px;
+  }
+  .explore-card {
+    padding: 28px 22px;
+    border-radius: 18px;
+  }
+  .explore-card-head { gap: 12px; margin-bottom: 8px; }
+  .explore-card-title { font-size: 22px; }
+  .explore-card-copy {
+    font-size: 14.5px;
+    margin-bottom: 20px;
+  }
+  .explore-list { max-width: none; }
+  .explore-list[data-columns] {
+    grid-template-columns: 1fr;
+  }
+  .explore-list li { font-size: 14.5px; }
+  .explore-cta-link {
+    width: 100%;
+    justify-content: center;
+    margin-top: 24px;
+    padding: 15px 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .explore-dial {
+    gap: 10px;
+    max-width: 340px;
+  }
+  .explore-media { flex-basis: 170px; height: 170px; }
+  .explore-meta { padding: 10px 12px 12px; gap: 2px; }
+  .explore-name { font-size: 17px; }
+}
+
+@media (max-width: 400px) {
+  .explore-dial {
+    grid-template-columns: 1fr;
+    max-width: 420px;
+  }
+  .explore-item:nth-child(even) { margin-top: 0; }
+  .explore-media {
+    flex-basis: 260px;
+    height: 260px;
+  }
+}
